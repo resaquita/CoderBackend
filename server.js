@@ -4,10 +4,6 @@ const {Contenedor} = require('./index')
 
 const texto = new Contenedor("productos.json");
 
-// const todo = texto.getAll().then(result =>{
-//          return result
-//       })
-
 const PORT = process.env.PORT || 8080
 
 const app = express()
@@ -19,7 +15,7 @@ app.get('/', (req, res)=>{
 
 app.get('/productos', (req,res)=>{
     texto.getAll().then(result =>{
-        array = JSON.stringify(result)
+        const array = JSON.stringify(result)
          return (
             res.send(`${array}`)
          )
@@ -31,7 +27,7 @@ app.get('/productos', (req,res)=>{
 
 app.get('/productoRandom', (req,res)=>{
     texto.getRandom().then(result =>{
-        array = JSON.stringify(result)
+        const array = JSON.stringify(result)
          return (
             res.send(`${array}`)
          )
