@@ -6,6 +6,12 @@
         "id": 1
     },
     {
+        "title": "remera",
+        "price": 220,
+        "thumbnail": "http://image.com",
+        "id": 2
+    },
+    {
         "title": "zapatillas",
         "price": 20,
         "thumbnail": "http://image.com",
@@ -16,18 +22,5 @@
         "price": 220,
         "thumbnail": "http://image.com",
         "id": 4
-    },
-
-{
-    "title": "gorra",
-    "price": 220,
-    "thumbnail": "http://image.com",
-    "id": 4
-},
-{
-    "title": "gorra",
-    "price": 220,
-    "thumbnail": "http://image.com",
-    "id": 5
-}
+    }
 ]
