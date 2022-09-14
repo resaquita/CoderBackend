@@ -24,13 +24,28 @@ class Contenedor {
         catch(error){
             console.log(error)
         }
-        
+    }
+    async edit(object){
+
+        try{
+            let contenido = await fs.promises.readFile(`./${this.name}`, 'utf-8');
+            let contenidojson = JSON.parse(contenido);
+            const productIndex = contenidojson.findIndex((product) => product.id === object.id);
+            console.log(productIndex)
+            contenidojson[productIndex] = object;
+            await fs.promises.writeFile(`./${this.name}`, JSON.stringify(contenidojson))
+
+            return object.id
+        } 
+        catch(error){
+            console.log(error)
+        }
     }
     async getBtId(id){
         try{
             let contenido = await fs.promises.readFile(`./${this.name}`, 'utf-8');
             let contenidojson = JSON.parse(contenido);
-            const object = contenidojson.find(x => x.id === id)
+            const object = contenidojson.find(x => x.id === +id)
             return object
         }
         catch(error){
@@ -52,14 +67,34 @@ class Contenedor {
         return contenidojson
     }
 
+    async getRandom(){
+        try{
+            let contenido = await fs.promises.readFile(`./${this.name}`, 'utf-8');
+            let contenidojson = JSON.parse(contenido);
+            let randomItem = contenidojson[Math.floor(Math.random()*contenidojson.length)]
+            return randomItem
+        }
+        catch(error){
+            console.log(error)
+        }
+        return randomItem
+    }
+    
+
     async deleteById(id){
         try{
             let contenido = await fs.promises.readFile(`./${this.name}`, 'utf-8');
             let contenidojson = JSON.parse(contenido);
-            contenidojson.splice(contenidojson.findIndex(function(i){
-                return i.id === id
-            }),1);
+            const product = contenidojson.find(product => product.id === +id);
+            if(product){
+                contenidojson.splice(contenidojson.findIndex(function(i){
+                    return i.id===id
+            }),1)
             await fs.promises.writeFile(`./${this.name}`, JSON.stringify(contenidojson));
+            const productId = id
+            return productId
+        };
+            
         }
         catch(error){
             console.log(error)
@@ -82,22 +117,24 @@ class Contenedor {
 
 }
 
+module.exports = {Contenedor}
+
 const obj1 = {
-    title: "gorra",
+    title: "botas",
     price: 220,
     thumbnail: "http://image.com",
 }
-const arch = new Contenedor("productos.json");
+// const arch = new Contenedor("productos.json");
 
-arch.save(obj1)
- arch.getBtId(2).then(result =>{
-     console.log(result)
- })
+ 
+//   arch.getBtId(2).then(result =>{
+//       console.log(result)
+//  })
 
- arch.getAll().then(result =>{
-     console.log(result)
- })
+//  arch.getAll().then(result =>{
+//      console.log(result)
+//  })
 
-arch.deleteById(2)
+// arch.deleteById(2)
 
-arch.deleteAll()
+// arch.deleteAll()

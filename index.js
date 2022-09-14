@@ -1,121 +1,33 @@
-const fs = require('fs');
+const express = require('express');
 
-class Contenedor {
+const path = require('path');
 
-     constructor(nombreArchivo){
-         this.name=nombreArchivo
-        
-    }
-    
-    async save(object){
+const apiRoutes = require('./routers/app.routers')
 
-        try{
-            let contenido = await fs.promises.readFile(`./${this.name}`, 'utf-8');
-            let contenidojson = JSON.parse(contenido);
-            let ultimoIndice = contenidojson.length - 1
-            let ultimoId = contenidojson[ultimoIndice].id
-            object.id = ultimoId + 1
-            let id = object.id
-            contenidojson.push(object)
-            await fs.promises.writeFile(`./${this.name}`, JSON.stringify(contenidojson))
+const app = express()
 
-            return id
-        } 
-        catch(error){
-            console.log(error)
-        }
-        
-    }
-    async getBtId(id){
-        try{
-            let contenido = await fs.promises.readFile(`./${this.name}`, 'utf-8');
-            let contenidojson = JSON.parse(contenido);
-            const object = contenidojson.find(x => x.id === id)
-            return object
-        }
-        catch(error){
-            console.log(error)
-        }
-        
-        return object
-    }
+const PORT = process.env.PORT || 8080
 
-    async getAll(){
-        try{
-            let contenido = await fs.promises.readFile(`./${this.name}`, 'utf-8');
-            let contenidojson = JSON.parse(contenido);
-            return contenidojson
-        }
-        catch(error){
-            console.log(error)
-        }
-        return contenidojson
-    }
+//Middlewares
 
-    async getRandom(){
-        try{
-            let contenido = await fs.promises.readFile(`./${this.name}`, 'utf-8');
-            let contenidojson = JSON.parse(contenido);
-            let randomItem = contenidojson[Math.floor(Math.random()*contenidojson.length)]
-            return randomItem
-        }
-        catch(error){
-            console.log(error)
-        }
-        return randomItem
-    }
-    
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }))
+app.use(express.static('public'))
 
-    async deleteById(id){
-        try{
-            let contenido = await fs.promises.readFile(`./${this.name}`, 'utf-8');
-            let contenidojson = JSON.parse(contenido);
-            contenidojson.splice(contenidojson.findIndex(function(i){
-                return i.id === id
-            }),1);
-            await fs.promises.writeFile(`./${this.name}`, JSON.stringify(contenidojson));
-        }
-        catch(error){
-            console.log(error)
-        }
-        
-    }
-    async deleteAll(){
-        try{
-            let contenido = await fs.promises.readFile(`./${this.name}`, 'utf-8');
-            let contenidojson = JSON.parse(contenido);
-            console.log(contenidojson)
-            contenidojson = []
-            console.log(contenidojson)
-            await fs.promises.writeFile(`./${this.name}`, JSON.stringify(contenidojson));
-        }
-        catch(error){
-            console.log(error)
-        }
-    }
+//Routes
 
-}
+app.use('/api', apiRoutes)
 
-module.exports = {Contenedor}
 
-console.log(module)
 
-const obj1 = {
-    title: "gorra",
-    price: 220,
-    thumbnail: "http://image.com",
-}
-// const arch = new Contenedor("productos.json");
+app.get('*', (req, res) => {
+    res.status(404).send('<h1> Page does not exist</h1>')
+})
 
-// arch.save(obj1)
-//  arch.getBtId(2).then(result =>{
-//      console.log(result)
-//  })
+const connectedServer = app.listen(PORT, () => {
+    console.log(`server is up an running on port ${PORT}`)
+})
 
-//  arch.getAll().then(result =>{
-//      console.log(result)
-//  })
-
-// arch.deleteById(2)
-
-// arch.deleteAll()
+connectedServer.on('error', (error) =>{
+    console.log(error.message)
+})
