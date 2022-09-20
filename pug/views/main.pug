@@ -1,0 +1,15 @@
+extends ./index
+
+block main
+    h3.text-primary Ingrese producto
+    form(action='/productos' method='post')
+        .form-group
+            label.font-weight-bold(for='title') Nombre
+            input.form-control(type='text' name='title')
+        .form-group
+            label.font-weight-bold(for='price') Precio
+            input.form-control(type='number' name='price')
+        .form-group
+            label.font-weight-bold(for='image') Foto URL
+            input.form-control(type='text' name='image')
+        input.btn.btn-success.mt-3.mb-5(type='submit' value='Enviar')
