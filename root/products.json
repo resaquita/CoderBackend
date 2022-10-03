@@ -1,0 +1,32 @@
+[
+    {
+        "title": "reloj",
+        "price": 120,
+        "image": "https://cdn3.iconfinder.com/data/icons/education-209/64/clock-stopwatch-timer-time-256.png",
+        "id": 1
+    },
+    {
+        "title": "avion de papel",
+        "price": 120,
+        "image": "https://cdn3.iconfinder.com/data/icons/education-209/64/plane-paper-toy-science-school-256.png",
+        "id": 2
+    },
+    {
+        "title": "manzana",
+        "price": 120,
+        "image": "https://cdn3.iconfinder.com/data/icons/education-209/64/apple-fruit-science-school-256.png",
+        "id": 3
+    },
+    {
+        "title": "cuaderno",
+        "price": "80",
+        "image": "https://cdn3.iconfinder.com/data/icons/education-209/64/book-note-paper-school-256.png",
+        "id": 4
+    },
+    {
+        "title": "cuaderno rojo",
+        "price": "123",
+        "image": "https://cdn3.iconfinder.com/data/icons/education-209/64/book-note-paper-school-256.png",
+        "id": 5
+    }
+]

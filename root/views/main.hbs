@@ -1,0 +1,24 @@
+<h1>Desafio con HBS</h1>
+    <section class="container mt-3 jumbotron">
+       {{>form}}
+    </section>
+    <section class="container mt-3 jumbotron">
+        <div id="vista">
+
+        </div>
+        <div class="divBtn">
+            <button class="btn btn-primary"><a href="/">Regresar al formulario</a></button>
+        </div>
+    </section>
+    <section class="container mt-3 jumbotron">
+        <h3 class="text-primary">Centro de Mensajes</h3>
+        <form id="msg-form">
+            <input id="email-input" type="email" name="email" class="form-control" placeholder="email@email.com">
+            <hr>
+            <div id="msg-center">
+
+            </div>
+            <input id="text-input" type="text" name="text" placeholder="Ingrese su mensaje..">
+            <input type="submit" value="Enviar!" class="btn btn-success mt-3 mb-5" id="sendMsg">
+        </form>
+    </section>
