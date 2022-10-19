@@ -16,9 +16,14 @@ httpServer.listen(PORT, ()=>console.log("Ready on port => ",PORT));
 
 const io = new SocketServer(httpServer);
 
-const { Contenedor } = require('./classContenedor')
-const  texto  = new Contenedor("products.json");
-const msgs = new Contenedor("messages.json")
+const dbConfig = require('./db/config')
+
+const { Contenedor } = require('./classContenedor');
+
+const dbMaria = new Contenedor(dbConfig.mariaDb)
+const dbSqlite3 = new Contenedor(dbConfig.sqlite3)
+
+
 
 
 app.engine('hbs', engine({
@@ -37,29 +42,33 @@ app.use(express.static('public'))
 
 
 io.on('connection', (socket) => {
-     texto.getAll().then(result =>{
-         socket.emit('products',result)
-     })  
-     msgs.getAll().then(result =>{
-        socket.emit('messages',result)
-    })  
+
+    dbMaria.getProducts("productos").then(result =>{
+        socket.emit('products',result)
+    })
+    
+    dbSqlite3.getMensajes('mensajes').then(result =>{
+        socket.emit('messages', result)
+    })
 
     socket.on("send-msg", (data) =>{
         data.date = date;
-        msgs.saveMsg(data).then(()=>{
-            msgs.getAll().then(result =>{
-                io.emit('messages',result)
-            })  
-        });
+        dbSqlite3.insertRecords("mensajes", data).then(()=>{
+            dbSqlite3.getMensajes('mensajes').then(result=>{
+                io.emit('messages', result)
+            })
+        })
+
     })
 
-     socket.on('productAdded', (data)=>{
-        texto.save(data).then(()=>{
-            texto.getAll().then(result =>{
+    socket.on('productAdded', (data)=>{
+        dbMaria.insertRecords("productos",data).then(()=>{
+            dbMaria.getRecords("productos").then(result =>{
                 io.emit('products',result)
-            }) 
+            })
         })
      })
+   
 })
 
 

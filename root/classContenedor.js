@@ -1,12 +1,70 @@
+const { response } = require('express');
 const fs = require('fs');
+const knex = require('knex')
 
 class Contenedor {
 
-     constructor(nombreArchivo){
-         this.name=nombreArchivo
+    //  constructor(nombreArchivo){
+    //      this.name=nombreArchivo
         
+    // }
+
+    constructor(config){
+        this.knex = knex(config)
+    }
+
+    async createTable(tableName, data){
+        const tableExists = await this.knex.schema.hasTable(tableName);
+            if (tableExists){
+                await this.knex.schema.dropTable(tableName);
+            }
+            else{
+                await this.knex.schema.createTable(tableName, (table) => {
+                    data
+                    table.increments('id').notNullable().primary();
+                    table.string('email').notNullable();
+                    table.string('text');
+                    table.string('date');
+                })
+            }
+    }
+
+    async insertRecords(tableName, items){
+        await this.knex(tableName).insert(items);
+    }
+
+    async getProducts(tableName){
+        return await this.knex.from(tableName).select(
+            'id',
+            'title',
+            'price',
+            'image'
+        );
+    }
+    async getMensajes(tableName){
+        return await this.knex.from(tableName).select(
+            'id',
+            'email',
+            'text',
+            'date'
+        );
     }
     
+    async deleteRecordById(tableName, id){
+        await this.knex.from(tableName).where({id}).del();
+    }
+    async deleteAllRecords(tableName){
+        await this.knex.from(tableName).del();
+    }
+    
+    async updateRecordById(tableName, id, payload){
+        await this.knex.from(tableName).where({id}).update(payload);
+    }
+
+    disconnect(){
+        this.knex.destroy();
+    }
+
     async save(object){
 
         try{
@@ -130,23 +188,3 @@ class Contenedor {
 }
 
 module.exports = {Contenedor}
-
-const obj1 = {
-    title: "botas",
-    price: 220,
-    thumbnail: "http://image.com",
-}
-// const arch = new Contenedor("productos.json");
-
- 
-//   arch.getBtId(2).then(result =>{
-//       console.log(result)
-//  })
-
-//  arch.getAll().then(result =>{
-//      console.log(result)
-//  })
-
-// arch.deleteById(2)
-
-// arch.deleteAll()

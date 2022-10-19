@@ -37,7 +37,7 @@ socket.on('messages', (data) =>{
   const html = data.map((message)=>{
     return `
       <span style="color: brown;">
-        <strong style="color: blue;">${message.email}</strong>${message.date}<i style="color: green;">${message.text}</i>
+        <strong style="color: blue;">${message.email} </strong>${message.date} <i style="color: green;">${message.text} </i>
       </span><br>
     `
   }).join("\n");
