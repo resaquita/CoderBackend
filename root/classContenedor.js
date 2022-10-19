@@ -13,14 +13,13 @@ class Contenedor {
         this.knex = knex(config)
     }
 
-    async createTable(tableName, data){
+    async createTable(tableName){
         const tableExists = await this.knex.schema.hasTable(tableName);
             if (tableExists){
                 await this.knex.schema.dropTable(tableName);
             }
             else{
                 await this.knex.schema.createTable(tableName, (table) => {
-                    data
                     table.increments('id').notNullable().primary();
                     table.string('email').notNullable();
                     table.string('text');

@@ -60,6 +60,7 @@ const mensajes = [
     
     (async () => {
         try{
+                await dbSqlite3.createTable("mensajes")
                  const tabla = await dbSqlite3.getMensajes("mensajes");
                  console.table(tabla);
             }
